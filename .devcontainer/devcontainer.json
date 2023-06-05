@@ -1,7 +1,8 @@
 // Instruction
-// - make this file consistent with that in https://github.com/okatsn/MyTeXLife
+// - For "name", make it unique among existing container
+// - For all others, make it the same/consistent with that in https://github.com/okatsn/MyTeXLife
 {
-    "name": "MyTeXLife",
+    "name": "MyTeXLifeWithJulia",
     "dockerComposeFile": [
         "docker-compose.yml"
     ],
@@ -52,7 +53,7 @@
         // Latex settings
         "gitProjectManager.baseProjectsFolders": [
             "/workspace/projects"
-            // SETME: it is PROJECT_DIR in docker-compose.yml
+            // SETME: it is SUB_PROJECT_DIR in docker-compose.yml
         ], // this allows GPM (felipecaputo.git-project-manager) to open repo in the "projects" in a new window
         "latex-workshop.linting.chktex.enabled": true,
         "latex-workshop.latex.clean.subfolder.enabled": true,

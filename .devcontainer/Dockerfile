@@ -22,3 +22,20 @@ RUN mkdir /opt/julia-${VARIANT} \
     && ln -fs /opt/julia-${VARIANT}/bin/julia /usr/local/bin/julia
 
 USER $NB_USER
+WORKDIR $WORKSPACE_DIR
+
+
+ENV JULIA_PROJECT=@.
+    # CHECKPOINT: OkRegistry will be added, but these packages disappears.
+    # try to fix this problem by moving it to the front
+
+
+RUN julia -e 'using Pkg; Pkg.update()' \
+    && julia -e '\
+        using Pkg; \
+        Pkg.Registry.add(RegistrySpec(url = "https://github.com/okatsn/OkRegistry.git"))' \
+    && julia -e ' \
+        using Pkg; \
+        Pkg.add(name="IJulia"); \
+        Pkg.build("IJulia") \
+    '
