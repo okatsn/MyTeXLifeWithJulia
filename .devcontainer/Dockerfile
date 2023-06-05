@@ -1,6 +1,8 @@
 FROM okatsn/my-tex-life
 # Docker image https://hub.docker.com/repository/docker/okatsn/my-tex-life/general built from https://github.com/okatsn/MyTeXLife
 
+
+# KEYNOTE: Please keep the following codes consistent with https://github.com/okatsn/MyJuliaSpace/tree/master/.devcontainer
 USER root
 
 # Install quarto
@@ -26,9 +28,6 @@ WORKDIR $WORKSPACE_DIR
 
 
 ENV JULIA_PROJECT=@.
-    # CHECKPOINT: OkRegistry will be added, but these packages disappears.
-    # try to fix this problem by moving it to the front
-
 
 RUN julia -e 'using Pkg; Pkg.update()' \
     && julia -e '\
@@ -39,3 +38,7 @@ RUN julia -e 'using Pkg; Pkg.update()' \
         Pkg.add(name="IJulia"); \
         Pkg.build("IJulia") \
     '
+# CHECKPOINT
+# For OhMyREPL
+# RUN mkdir -p $HOME/.julia/config
+# COPY .devcontainer/startup.jl $HOME/.julia/config/startup.jl
