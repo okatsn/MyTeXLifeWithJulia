@@ -1,4 +1,6 @@
-# This is [Compose file](https://docs.docker.com/compose/compose-file/compose-file-v3/)
+# # Instruction
+# - assign a new image name
+# - make this file consistent with that in https://github.com/okatsn/MyTeXLife
 version: "3.2"
 
 services:
@@ -8,20 +10,12 @@ services:
       # That is, /.devcontainer
       dockerfile: Dockerfile
       # That is, /.devcontainer/Dockerfile (rename makes it more clear)
-      args:
-        WORKSPACE_DIR: /workspace
-        PROJECT_DIR: /workspace/projects
-        # SETME: make this consistent with that in devcontainer.json
-        # PROJECT_DIR is intended for you to easily go there for cloning your projects,
-        # i.e., cd $PROJECT_DIR
-    image: latexdevcontainer
+    image: latexjuliadev
     init: true
     # See https://docs.docker.com/compose/compose-file/compose-file-v3/#init
     volumes:
       # The home directory is called "workspace"; try `cd ..` and `ls` to figure it out.
       - ../:/workspace
-      # SETME: make this consistent with that in devcontainer.json
-
       # Docker socket to access Docker server
       - /var/run/docker.sock:/var/run/docker.sock
       # SSH directory

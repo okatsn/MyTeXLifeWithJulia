@@ -1,3 +1,5 @@
+// Instruction
+// - make this file consistent with that in https://github.com/okatsn/MyTeXLife
 {
     "name": "MyTeXLife",
     "dockerComposeFile": [
