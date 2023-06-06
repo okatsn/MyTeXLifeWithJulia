@@ -31,14 +31,28 @@ ENV JULIA_PROJECT=@.
 
 RUN julia -e 'using Pkg; Pkg.update()' \
     && julia -e '\
-        using Pkg; \
-        Pkg.Registry.add(RegistrySpec(url = "https://github.com/okatsn/OkRegistry.git"))' \
+    using Pkg; \
+    Pkg.Registry.add(RegistrySpec(url = "https://github.com/okatsn/OkRegistry.git"))' \
     && julia -e ' \
-        using Pkg; \
-        Pkg.add(name="IJulia"); \
-        Pkg.build("IJulia") \
+    using Pkg; \
+    Pkg.add(name="IJulia"); \
+    Pkg.build("IJulia") \
     '
-# CHECKPOINT
 # For OhMyREPL
-# RUN mkdir -p $HOME/.julia/config
-# COPY .devcontainer/startup.jl $HOME/.julia/config/startup.jl
+RUN mkdir -p $HOME/.julia/config
+COPY .devcontainer/startup.jl $HOME/.julia/config/startup.jl
+
+
+# CHECKPOINT: Remove old .vscode-server
+# - since okatsn/my-tex-life already has .vscode-server in /home/jovyan; if I don't delete it, error `rmdir: failed to remove 'home/.../.vscode-server/bin/....' Directory not empty` will occur
+# - It seems set your current vscode's "dev.containers.cacheVolume": false, to apply your extensions and settings in .devcontainer/devcontainer.json
+# - an alternative way is to use `RUN code-server --install-extension ms-python.python` (suggested by chatgpt)
+# - see also: https://github.com/microsoft/vscode-remote-release/issues/7690 and related posts in Dockerfile of MyJuliaSpace
+ARG VSCODE_PATH=/home/$NB_USER/.vscode-server
+ARG VSCODE_INS_PATH=/home/$NB_USER/.vscode-server-insiders
+RUN rm -rf $VSCODE_PATH
+RUN mkdir -p $VSCODE_PATH/extensions \
+    $VSCODE_INS_PATH/extensions \
+    && chown -R $NB_USER \
+    $VSCODE_PATH \
+    $VSCODE_INS_PATH
