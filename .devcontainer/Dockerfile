@@ -6,7 +6,7 @@ FROM okatsn/my-tex-life
 USER root
 
 # Install quarto
-RUN  apt-get update && apt-get -y install gdebi-core
+RUN apt-get update && apt-get -y install gdebi-core
 RUN curl -LO https://quarto.org/download/latest/quarto-linux-amd64.deb
 RUN gdebi --non-interactive quarto-linux-amd64.deb
 
@@ -26,7 +26,6 @@ RUN mkdir /opt/julia-${VARIANT} \
 USER $NB_USER
 WORKDIR $WORKSPACE_DIR
 
-
 ENV JULIA_PROJECT=@.
 
 RUN julia -e 'using Pkg; Pkg.update()' \
@@ -38,10 +37,11 @@ RUN julia -e 'using Pkg; Pkg.update()' \
     Pkg.add(name="IJulia"); \
     Pkg.build("IJulia") \
     '
-# For OhMyREPL
-RUN mkdir -p $HOME/.julia/config
-COPY .devcontainer/startup.jl $HOME/.julia/config/startup.jl
 
+# For OhMyREPL
+# KEYNOTE: use $HOME instead of /home/$NB_USER will fail! Since $HOME is not recognized as absolute directory!
+RUN mkdir -p /home/$NB_USER/.julia/config
+COPY .devcontainer/startup.jl /home/$NB_USER/.julia/config/startup.jl
 
 # CHECKPOINT: Remove old .vscode-server
 # - since okatsn/my-tex-life already has .vscode-server in /home/jovyan; if I don't delete it, error `rmdir: failed to remove 'home/.../.vscode-server/bin/....' Directory not empty` will occur
@@ -56,3 +56,13 @@ RUN mkdir -p $VSCODE_PATH/extensions \
     && chown -R $NB_USER \
     $VSCODE_PATH \
     $VSCODE_INS_PATH
+
+# CHECKPOINT: Multi stage build; Merge these keynotes to the README of my-julia-space
+# https://cindyliu923.com/2021/05/23/What-is-docker-multi-stage/
+# - Explanation: What are inside an image?  layers!
+# - Keypoints: Middle images won't presents as layers in the final image.
+# - All files and folders not `COPY`ed won't survive in the final stage. (?!)
+# - Application: Thus you can have some secrets inside the middle image!
+
+# https://docs.docker.com/develop/develop-images/dockerfile_best-practices/#use-multi-stage-builds
+# - Only the instructions RUN, COPY, ADD create layers.
