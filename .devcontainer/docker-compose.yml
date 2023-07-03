@@ -37,8 +37,8 @@ services:
       # Persistent the julia depot
       - julia-depot:/home/jovyan/.julia
       # Avoid reinstall vscode extensions
-      # KEYNOTE: make sure /home/$NB_USER/.vscode-server/extensions is `mkdir`ed in Dockerfile
-      - vscode-extensions:/home/jovyan/.vscode-server/extensions
+      # KEYNOTE: Please refer to my-julia-space for more explanation
+      - vscode-server:/vscode/vscode-server
     environment:
       - TZ=TW
       # Set time zone
@@ -47,7 +47,4 @@ services:
 volumes:
   # KEYNOTE: Those defined volumes in service should be declared in the root level
   julia-depot:
-  vscode-extensions:
-    # CHECKPOINT:
-    # - without persistent julia-depot, new julia package added will not vanished after container closed
-    # - Keep in mind that okatsn/my-tex-life already has /home/jovyan/.vscode-server; see Dockerfile for more information
+  vscode-server:
