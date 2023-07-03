@@ -37,6 +37,7 @@ RUN julia -e 'using Pkg; Pkg.update()' \
     Pkg.add(name="IJulia"); \
     Pkg.build("IJulia") \
     '
+# Noted that Pkg.build("IJulia") might be effortless if built here.
 
 # For OhMyREPL
 # KEYNOTE: use $HOME instead of /home/$NB_USER will fail! Since $HOME is not recognized as absolute directory!
