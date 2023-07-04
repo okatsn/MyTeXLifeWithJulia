@@ -64,7 +64,7 @@
                 "files.associations": {
                     "*.tex": "latex"
                 },
-                "dev.containers.cacheVolume": false
+                "dev.containers.cacheVolume": true
             }
         }
     }
