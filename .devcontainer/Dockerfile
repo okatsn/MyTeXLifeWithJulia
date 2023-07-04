@@ -6,7 +6,7 @@ FROM okatsn/my-tex-life
 USER root
 
 # Install quarto
-RUN  apt-get update && apt-get -y install gdebi-core
+RUN apt-get update && apt-get -y install gdebi-core
 RUN curl -LO https://quarto.org/download/latest/quarto-linux-amd64.deb
 RUN gdebi --non-interactive quarto-linux-amd64.deb
 
@@ -26,19 +26,31 @@ RUN mkdir /opt/julia-${VARIANT} \
 USER $NB_USER
 WORKDIR $WORKSPACE_DIR
 
-
 ENV JULIA_PROJECT=@.
 
 RUN julia -e 'using Pkg; Pkg.update()' \
     && julia -e '\
-        using Pkg; \
-        Pkg.Registry.add(RegistrySpec(url = "https://github.com/okatsn/OkRegistry.git"))' \
+    using Pkg; \
+    Pkg.Registry.add(RegistrySpec(url = "https://github.com/okatsn/OkRegistry.git"))' \
     && julia -e ' \
-        using Pkg; \
-        Pkg.add(name="IJulia"); \
-        Pkg.build("IJulia") \
+    using Pkg; \
+    Pkg.add(name="IJulia"); \
+    Pkg.build("IJulia") \
     '
-# CHECKPOINT
+# Noted that Pkg.build("IJulia") might be effortless if built here.
+
 # For OhMyREPL
-# RUN mkdir -p $HOME/.julia/config
-# COPY .devcontainer/startup.jl $HOME/.julia/config/startup.jl
+# KEYNOTE: use $HOME instead of /home/$NB_USER will fail! Since $HOME is not recognized as absolute directory!
+RUN mkdir -p /home/$NB_USER/.julia/config
+COPY .devcontainer/startup.jl /home/$NB_USER/.julia/config/startup.jl
+
+
+# CHECKPOINT: Multi stage build; Merge these keynotes to the README of my-julia-space
+# https://cindyliu923.com/2021/05/23/What-is-docker-multi-stage/
+# - Explanation: What are inside an image?  layers!
+# - Keypoints: Middle images won't presents as layers in the final image.
+# - All files and folders not `COPY`ed won't survive in the final stage. (?!)
+# - Application: Thus you can have some secrets inside the middle image!
+
+# https://docs.docker.com/develop/develop-images/dockerfile_best-practices/#use-multi-stage-builds
+# - Only the instructions RUN, COPY, ADD create layers.

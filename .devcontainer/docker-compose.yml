@@ -6,16 +6,19 @@ version: "3.2"
 services:
   devtj:
     build:
-      context: .
-      # That is, /.devcontainer
-      dockerfile: Dockerfile
-      # That is, /.devcontainer/Dockerfile (rename makes it more clear)
+      context: ..
+      #     That is out of /.devcontainer
+      # context: .
+      #     That is /.devcontainer
+      dockerfile: .devcontainer/Dockerfile
       args:
-        VARIANT: "1.9.0"
+        VARIANT: "1.9.1"
         JULIA_PKG_DEVDIR: /home/jovyan/.julia/dev # just let it be default. See [JULIA_PKG_DEVDIR](https://docs.julialang.org/en/v1/manual/environment-variables/#JULIA_PKG_DEVDIR). Be aware that some tests will depend on JULIA_PKG_DEVDIR.
+        # SUB_PROJECT_DIR is defined in my-tex-life
     image: latexjuliadev
     init: true
     # See https://docs.docker.com/compose/compose-file/compose-file-v3/#init
+    container_name: tex-with-julia
     volumes:
       # The home directory is called "workspace"; try `cd ..` and `ls` to figure it out.
       - ../:/workspace
@@ -30,8 +33,19 @@ services:
       - ~/.zsh_history:/home/jovyan/.zsh_history:z
       # Git config
       - ~/.gitconfig:/home/jovyan/.gitconfig
+      # # KEYNOTE: Define volumes in service
+      # Persistent the julia depot
+      - julia-depot:/home/jovyan/.julia
+      # Avoid reinstall vscode extensions
+      # KEYNOTE: Please refer to my-julia-space for more explanation
+      # - ~/.vscode-server:/home/jovyan/.vscode-server
     environment:
       - TZ=TW
       # Set time zone
-    # entrypoint: ["zsh", "-c", "while sleep 1000; do :; done"]
+      # entrypoint: ["zsh", "-c", "while sleep 1000; do :; done"]
     entrypoint: sh -c "sleep infinity"
+# KEYNOTE: Those defined volumes in service should be declared in the root level
+# Unbind vscode-server to volumes to ensure extensions in devcontainer.json to be installed on rebuild
+volumes:
+  # vscode-server:
+  julia-depot:
