@@ -17,6 +17,7 @@
             "extensions": [
                 // KEYNOTE: Please refer "dev.containers.defaultExtensions" in  settings.json (Ctrl+Shift+P and Open User Settings (JSON)) for Common Extensions
                 // MyJuliaSpace Exclusive
+                // CHECKPOINT: julia extension not installed on rebuild.
                 "julialang.language-julia", // julia
                 "colinfang.markdown-julia",
                 // CHECKPPOINT: unlock me if python and jupyter are installed

@@ -38,7 +38,7 @@ services:
       - julia-depot:/home/jovyan/.julia
       # Avoid reinstall vscode extensions
       # KEYNOTE: Please refer to my-julia-space for more explanation
-      - vscode-server:/vscode/vscode-server
+      - ~/.vscode-server:/home/jovyan/.vscode-server
     environment:
       - TZ=TW
       # Set time zone
