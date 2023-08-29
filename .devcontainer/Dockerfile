@@ -5,8 +5,25 @@ FROM okatsn/my-tex-life
 # KEYNOTE: Please keep the following codes consistent with https://github.com/okatsn/MyJuliaSpace/tree/master/.devcontainer
 USER root
 
-# Install quarto
-RUN apt-get update && apt-get -y install gdebi-core
+RUN apt-get update && apt-get -y install \
+    gdebi-core
+
+RUN apt update && apt install \
+    fontconfig \
+    fonts-noto-cjk \
+    fonts-arphic-uming \
+    fonts-arphic-ukai
+
+# TODO: move this to MyTexLife when it is stable.
+
+# Install Fonts
+# in order to use `fc-cache -f -v` and `fc-list :lang=zh`
+# - `fc-cache -f -v`: (copy font files to /usr/share/fonts/ and Update Font Cache)
+# - `fc-list :lang=zh`: List all chinese font available
+
+# # Install quarto
+# # - Noted that gdebi-core is required.
+
 RUN curl -LO https://quarto.org/download/latest/quarto-linux-amd64.deb
 RUN gdebi --non-interactive quarto-linux-amd64.deb
 
