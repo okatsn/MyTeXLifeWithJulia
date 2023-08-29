@@ -1,3 +1,5 @@
+FROM okatsn/my-typst-space AS build0
+
 FROM okatsn/my-tex-life
 # Docker image https://hub.docker.com/repository/docker/okatsn/my-tex-life/general built from https://github.com/okatsn/MyTeXLife
 
@@ -71,3 +73,12 @@ COPY .devcontainer/startup.jl /home/$NB_USER/.julia/config/startup.jl
 
 # https://docs.docker.com/develop/develop-images/dockerfile_best-practices/#use-multi-stage-builds
 # - Only the instructions RUN, COPY, ADD create layers.
+
+
+# # For Typst
+# # # Install Rust
+# # # Please refers https://www.rust-lang.org/learn/get-started. `-s -- -y` is suggested by ChatGPT in order to install using default settings without interrupt.
+# RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
+
+COPY --from=build0 /bin/typst /bin
+# Please refer: https://github.com/my-typst-space

@@ -33,7 +33,11 @@
                 "valentjn.vscode-ltex", // Spell & Grammar check
                 "tabnine.tabnine-vscode", // Other helpers
                 "stkb.rewrap", // rewrap comments after n characters on one line
-                "vscode-icons-team.vscode-icons"
+                "vscode-icons-team.vscode-icons",
+                // Typst extensions
+                "nvarner.typst-lsp",
+                "mgt19937.typst-preview",
+                "oijaz.unicode-latex",
             ],
             "settings": {
                 "python.terminal.activateEnvironment": false,
