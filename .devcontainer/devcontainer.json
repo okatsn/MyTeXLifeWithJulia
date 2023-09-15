@@ -38,6 +38,8 @@
                 "nvarner.typst-lsp",
                 "mgt19937.typst-preview",
                 "oijaz.unicode-latex",
+                // DVC
+                "iterative.dvc", // data version control
             ],
             "settings": {
                 "python.terminal.activateEnvironment": false,
