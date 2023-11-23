@@ -1,6 +1,6 @@
 FROM okatsn/my-typst-space AS build0
 
-FROM okatsn/my-tex-life
+FROM okatsn/my-tex-life:2023
 # Docker image https://hub.docker.com/repository/docker/okatsn/my-tex-life/general built from https://github.com/okatsn/MyTeXLife
 
 
