@@ -5,3 +5,5 @@ atreplinit() do repl # [Automatically start with Julia](https://kristofferc.gith
         @warn "error while importing OhMyREPL" e
     end
 end # mkdir -p $HOME/.julia/config && cp startup.jl "$_"
+
+using OkStartUp
