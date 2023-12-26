@@ -1,9 +1,10 @@
-atreplinit() do repl # [Automatically start with Julia](https://kristofferc.github.io/OhMyREPL.jl/latest/installation/#Automatically-start-with-Julia.)
+# Please refer to the startup.jl in okatsn/MyJuliaSpace
+atreplinit() do repl
     try
-        @eval using OhMyREPL
+        @eval using OhMyREPL, TerminalPager
     catch e
         @warn "error while importing OhMyREPL" e
     end
-end # mkdir -p $HOME/.julia/config && cp startup.jl "$_"
+end
 
 using OkStartUp
