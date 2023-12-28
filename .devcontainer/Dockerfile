@@ -53,11 +53,16 @@ WORKDIR $WORKSPACE_DIR
 # # # Please refers https://www.rust-lang.org/learn/get-started. `-s -- -y` is suggested by ChatGPT in order to install using default settings without interrupt.
 # RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
 
-
+# # Julia part (Please refer the Dockerfile in okatsn/my-julia-build)
 COPY --from=build-julia /home/okatsn/.julia /home/$NB_USER/.julia
 COPY --from=build-julia /opt/julia-okatsn /opt/julia-okatsn
 # Create link in the new machine (based on that /usr/local/bin/ is already in PATH)
 RUN sudo ln -fs /opt/julia-okatsn/bin/julia /usr/local/bin/julia
+RUN julia --project=@okatsn -e 'using Pkg; Pkg.update()' \
+    && julia -e ' \
+    Pkg.instantiate(); \
+    Pkg.build("IJulia"); \
+    '
 
 COPY --from=build0 /bin/typst /bin
 # Please refer: https://github.com/my-typst-space
