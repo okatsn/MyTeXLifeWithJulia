@@ -55,11 +55,20 @@ RUN ln -fs /opt/julia-okatsn/bin/julia /usr/local/bin/julia
 USER $NB_USER
 # RUN julia -e '...' will fail if the permission settings (`chown`) have problems.
 
+# # Install jlpkg, which allows direct use of Pkg in bash command line.
+# # SETME: you have to manually specify the latest version.
+# Please refer https://github.com/fredrikekre/jlpkg
+RUN curl -fsSL https://github.com/fredrikekre/jlpkg/releases/download/v1.5.1/jlpkg-v1.5.1.tar.gz | \
+    tar -xzC /usr/local/bin && \
+    # Install Pkg. I didn't figure out why it is not available in the followings without manually add it.
+    jlpkg add Pkg
+
 RUN julia -e 'using Pkg; Pkg.update()' \
     && julia -e ' \
     Pkg.instantiate(); \
     Pkg.build("IJulia"); \
     '
+# CHECKPOINT: Pkg not defined...
 
 COPY --from=build0 /bin/typst /bin
 # Please refer: https://github.com/my-typst-space
