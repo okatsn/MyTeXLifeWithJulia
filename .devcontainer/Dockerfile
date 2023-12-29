@@ -9,16 +9,6 @@ FROM okatsn/my-tex-life
 # KEYNOTE: Please keep the following codes consistent with https://github.com/okatsn/MyJuliaSpace/tree/master/.devcontainer
 USER root
 
-RUN apt-get update && apt-get -y install \
-    gdebi-core
-
-
-# # Install quarto (failed)
-# # - Noted that gdebi-core is required.
-
-RUN curl -LO https://quarto.org/download/latest/quarto-linux-amd64.deb
-RUN gdebi --non-interactive quarto-linux-amd64.deb
-
 # Install Julia
 ARG JULIA_PKG_DEVDIR="this.is.into.which.dev.clones.packages."
 
@@ -28,8 +18,7 @@ ENV JULIA_PKG_DEVDIR=${JULIA_PKG_DEVDIR}
 
 # it should be defined here, despite it will overwritten by that in docker-compose.yml
 
-USER $NB_USER
-WORKDIR $WORKSPACE_DIR
+
 
 # For OhMyREPL
 # KEYNOTE: use $HOME instead of /home/$NB_USER will fail! Since $HOME is not recognized as absolute directory!
@@ -53,12 +42,20 @@ WORKDIR $WORKSPACE_DIR
 # # # Please refers https://www.rust-lang.org/learn/get-started. `-s -- -y` is suggested by ChatGPT in order to install using default settings without interrupt.
 # RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
 
+
+
+
 # # Julia part (Please refer the Dockerfile in okatsn/my-julia-build)
-COPY --from=build-julia /home/okatsn/.julia /home/$NB_USER/.julia
-COPY --from=build-julia /opt/julia-okatsn /opt/julia-okatsn
+COPY --from=build-julia --chown=$NB_UID:$NB_GID /home/okatsn/.julia /home/$NB_USER/.julia
+COPY --from=build-julia --chown=$NB_UID:$NB_GID /opt/julia-okatsn /opt/julia-okatsn
 # Create link in the new machine (based on that /usr/local/bin/ is already in PATH)
-RUN sudo ln -fs /opt/julia-okatsn/bin/julia /usr/local/bin/julia
-RUN julia --project=@okatsn -e 'using Pkg; Pkg.update()' \
+RUN ln -fs /opt/julia-okatsn/bin/julia /usr/local/bin/julia
+
+# WORKDIR $WORKSPACE_DIR
+USER $NB_USER
+# RUN julia -e '...' will fail if the permission settings (`chown`) have problems.
+
+RUN julia -e 'using Pkg; Pkg.update()' \
     && julia -e ' \
     Pkg.instantiate(); \
     Pkg.build("IJulia"); \
@@ -66,3 +63,4 @@ RUN julia --project=@okatsn -e 'using Pkg; Pkg.update()' \
 
 COPY --from=build0 /bin/typst /bin
 # Please refer: https://github.com/my-typst-space
+
