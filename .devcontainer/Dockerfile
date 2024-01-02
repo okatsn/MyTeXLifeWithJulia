@@ -1,9 +1,7 @@
 FROM okatsn/my-typst-space AS build0
 
-FROM okatsn/my-julia-build:latest as build-julia
-# CHECKPOINT: Pin image version when it is stable
-FROM okatsn/my-tex-life 
-# CHECKPOINT: Pin image version when it is stable
+FROM okatsn/my-julia-build:v1.10-2024a as build-julia
+FROM okatsn/my-tex-life:v2024a
 # Docker image https://hub.docker.com/repository/docker/okatsn/my-tex-life/general built from https://github.com/okatsn/MyTeXLife
 
 
