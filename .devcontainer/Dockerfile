@@ -1,8 +1,9 @@
 FROM okatsn/my-typst-space AS build0
 
 FROM okatsn/my-julia-build:latest as build-julia
-
-FROM okatsn/my-tex-life
+# CHECKPOINT: Pin image version when it is stable
+FROM okatsn/my-tex-life 
+# CHECKPOINT: Pin image version when it is stable
 # Docker image https://hub.docker.com/repository/docker/okatsn/my-tex-life/general built from https://github.com/okatsn/MyTeXLife
 
 
@@ -60,15 +61,8 @@ USER $NB_USER
 # Please refer https://github.com/fredrikekre/jlpkg
 RUN curl -fsSL https://github.com/fredrikekre/jlpkg/releases/download/v1.5.1/jlpkg-v1.5.1.tar.gz | \
     tar -xzC /usr/local/bin && \
-    # Install Pkg. I didn't figure out why it is not available in the followings without manually add it.
-    jlpkg add Pkg
-
-RUN julia -e 'using Pkg; Pkg.update()' \
-    && julia -e ' \
-    Pkg.instantiate(); \
-    Pkg.build("IJulia"); \
-    '
-# CHECKPOINT: Pkg not defined...
+    jlpkg add Pkg && \
+    julia -e 'using Pkg; Pkg.update(); Pkg.instantiate(); Pkg.build("IJulia");' 
 
 COPY --from=build0 /bin/typst /bin
 # Please refer: https://github.com/my-typst-space
