@@ -57,12 +57,13 @@ USER $NB_USER
 # RUN julia -e '...' will fail if the permission settings (`chown`) have problems.
 
 # # Install jlpkg, which allows direct use of Pkg in bash command line.
-# # SETME: you have to manually specify the latest version.
-# Please refer https://github.com/fredrikekre/jlpkg
-RUN curl -fsSL https://github.com/fredrikekre/jlpkg/releases/download/v1.5.1/jlpkg-v1.5.1.tar.gz | \
-    tar -xzC /usr/local/bin && \
-    jlpkg add Pkg && \
-    julia -e 'using Pkg; Pkg.update(); Pkg.instantiate(); Pkg.build("IJulia");' 
+# # Please refer https://github.com/fredrikekre/jlpkg
+# # KEYNOTE: use jlpkg to install Pkg was intended to fix the " UndefVarError: `Pkg` not defined". However, this error is resulted by a stupid mistake in the next RUN that `Pkg.instantiate()` is used without `using Pkg` (you used `&&` to concatenate two `RUN julia -e '...'`). Feel free to delete this "Install jlpkg" section in the future.
+# RUN curl -fsSL https://github.com/fredrikekre/jlpkg/releases/download/v1.5.1/jlpkg-v1.5.1.tar.gz | \
+#     tar -xzC /usr/local/bin && \
+#     jlpkg add Pkg && \
+
+RUN julia -e 'using Pkg; Pkg.update(); Pkg.instantiate(); Pkg.build("IJulia");' 
 
 COPY --from=build0 /bin/typst /bin
 # Please refer: https://github.com/my-typst-space
