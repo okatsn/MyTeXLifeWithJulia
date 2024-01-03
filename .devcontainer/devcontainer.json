@@ -20,11 +20,11 @@
                 // CHECKPOINT: julia extension not installed on rebuild.
                 "julialang.language-julia", // julia
                 "colinfang.markdown-julia",
-                // CHECKPPOINT: unlock me if python and jupyter are installed
+                // CHECKPOINT: unlock me if python and jupyter are installed
                 // "ms-python.python",                        // python
                 // "ms-python.vscode-pylance",
                 // "quarto.quarto",
-                "bungcip.better-toml",
+                "tamasfe.even-better-toml",
                 // MyTeXLife Exclusive
                 "james-yu.latex-workshop", // Latex
                 "mathematic.vscode-latex",
