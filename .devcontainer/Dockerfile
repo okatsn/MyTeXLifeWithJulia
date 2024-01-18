@@ -17,6 +17,20 @@ FROM okatsn/my-tex-life:v2024a1
 # KEYNOTE: Please keep the following codes consistent with https://github.com/okatsn/MyJuliaSpace/tree/master/.devcontainer
 USER root
 
+# # Install Zotero
+RUN curl -sL https://raw.githubusercontent.com/retorquere/zotero-deb/master/install.sh | bash
+RUN apt update && apt -y install \
+    zotero
+# TODO: Install Zotero and BibTeX (cannot be done in Dockerfile)
+# - Download Better BibTeX: https://github.com/retorquere/zotero-better-bibtex/releases/latest 
+# - $ zotero          // open zotero (a window of zotero app should pop out)
+# - In Zotero app, click Tools > Add-ons > ⚙️ (setting icon) > Install Add-on from file... and click on the zotero-better-bibtex-6.7.143.xpi you just downloaded.
+#
+# KEYNOTE: How to use
+# - Open Zotero ($ zotero)
+# - Use VSCode addon XING.zotero-cite "Zotero Cite: Cite and Create Bibliograph for Pandoc/LaTeX." (it creates main.bib for main.tex for example)
+
+
 # For OhMyREPL
 # KEYNOTE: use $HOME instead of /home/$NB_USER will fail! Since $HOME is not recognized as absolute directory!
 # RUN mkdir -p /home/$NB_USER/.julia/config
