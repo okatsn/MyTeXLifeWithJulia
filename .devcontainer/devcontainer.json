@@ -46,8 +46,9 @@
                 "python.terminal.activateEnvironment": false,
                 "gitProjectManager.baseProjectsFolders": [
                     "/workspace/projects", // SUB_PROJECT_DIR defined in this Dockerfile or the previous image (i.e., okatsn/my-tex-life)
-                    "~/.julia/dev"
+                    "~/.julia/dev",
                     // SETME: it is allows GPM (felipecaputo.git-project-manager) to open repo in the "projects" in a new window
+                    "/workspace"
                 ],
                 // MyTeXLife Exclusive
                 "latex-workshop.latexindent.path": "latexindent",
