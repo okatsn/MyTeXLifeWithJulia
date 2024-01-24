@@ -28,7 +28,8 @@ RUN apt update && apt -y install \
 #
 # KEYNOTE: How to use
 # - Open Zotero ($ zotero)
-# - Use VSCode addon XING.zotero-cite "Zotero Cite: Cite and Create Bibliograph for Pandoc/LaTeX." (it creates main.bib for main.tex for example)
+# - Use VSCode addon XING.zotero-cite "Zotero Cite: Cite and Create Bibliograph for Pandoc/LaTeX." (it creates main.bib for main.tex for example), or use raykr.zotex "Zotex: Cite and Create Bibliograph for LaTeX."
+
 
 
 # For OhMyREPL
