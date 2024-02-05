@@ -19,7 +19,7 @@ USER root
 
 # # Install Zotero
 RUN curl -sL https://raw.githubusercontent.com/retorquere/zotero-deb/master/install.sh | bash
-RUN apt update && apt -y install \
+RUN apt-get update && apt-get -y install \
     zotero
 # TODO: Install Zotero and BibTeX (cannot be done in Dockerfile)
 # - Download Better BibTeX: https://github.com/retorquere/zotero-better-bibtex/releases/latest 
