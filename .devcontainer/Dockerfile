@@ -9,6 +9,26 @@
 # $ docker tag devjuliatex okatsn/my-tex-life-with-julia:latest
 # $ docker push okatsn/my-tex-life-with-julia:latest
 
+# KEYNOTE: Trouble shooting
+# Use the following command if it fails to build in one machine but success in the other with exactly the same script.
+# - `docker builder prune` # Clear Build Cache
+# - `docker volume prune` # Remove Unused Volumes
+
+# # WARN: Try BOTH delete volumes and `docker builder prune` before rebuild. Ohterwise, the Project.toml won't be overwritten by Project_for_env.toml.
+# # Explain:
+# # If the volume mounted for julia already exists, anything modifying the volume won't work. For example, 
+#
+# # This works:
+# RUN cp /home/$NB_USER/.julia/environments/v1.10/Project.toml /home/Project2.toml
+#
+# # But the followings do nothing if volume not deleted and builder not pruned:
+# # (This doesn't work)
+# COPY --chown=$NB_UID:$NB_GID .devcontainer/Project_for_env.toml /home/$NB_USER/.julia/environments/v1.10/Project_for_env.toml
+#
+# # (This doesn't work either):
+# COPY --chown=$NB_UID:$NB_GID .devcontainer/Project_for_env.toml /tmp/Project.toml
+# RUN mv -f /tmp/Project.toml /home/$NB_USER/.julia/environments/${JULIA_VER}/Project.toml
+
 FROM okatsn/my-typst-space AS build0
 
 FROM okatsn/my-julia-build:v1.10-2024a as build-julia
@@ -17,6 +37,11 @@ FROM okatsn/my-tex-life:v2024a1
 
 
 USER root
+
+
+ARG JULIA_VER
+# KEYNOTE: This variable is defined in docker-compose.yml, and should be consistent with that of my-julia-build
+
 
 # # Install Zotero
 RUN curl -sL https://raw.githubusercontent.com/retorquere/zotero-deb/master/install.sh | bash
@@ -60,6 +85,7 @@ RUN apt-get update && apt-get -y install \
 
 # # Julia part (Please refer the Dockerfile in okatsn/my-julia-build)
 COPY --from=build-julia --chown=$NB_UID:$NB_GID /home/okatsn/.julia /home/$NB_USER/.julia
+COPY --chown=$NB_UID:$NB_GID .devcontainer/Project_for_env.toml /home/$NB_USER/.julia/environments/${JULIA_VER}/Project.toml
 COPY --from=build-julia --chown=$NB_UID:$NB_GID /opt/julia-okatsn /opt/julia-okatsn
 # Create link in the new machine (based on that /usr/local/bin/ is already in PATH)
 RUN ln -fs /opt/julia-okatsn/bin/julia /usr/local/bin/julia
@@ -75,7 +101,8 @@ USER $NB_USER
 #     tar -xzC /usr/local/bin && \
 #     jlpkg add Pkg && \
 
-RUN julia -e 'using Pkg; Pkg.update(); Pkg.instantiate(); Pkg.build("IJulia");' 
+# KEYNOTE: This seems to cause Permission denied error until you (firstly disable this line in order to successfully build the container) add and build IJulia in your container, and rebuild again. (The permission issue is related to conda)
+# RUN julia -e 'using Pkg; Pkg.update(); Pkg.instantiate(); Pkg.build("IJulia");' 
 
 COPY --from=build0 /bin/typst /bin
 # Please refer: https://github.com/my-typst-space
