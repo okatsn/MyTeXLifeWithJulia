@@ -2,7 +2,9 @@
 # The error is fixed when I build the image again using the following command instead; previously, the image was build using docker-compose.yml.
 # However, I cannot reproduce the error again. I'm not sure the permission denied error is solved by using the following building command, or by remove all the my-tex-life-with-julia--related containers, images and volumes.
 # 
-# Building command:
+# Building command: 
+# # SETME: `devjuliatex` and `my-tex-life-with-julia` can be replaced by arbitrary names.
+# # SETME: Remember to change the tag name
 # $ docker build -t devjuliatex -f .devcontainer/Dockerfile .
 # $ docker tag devjuliatex okatsn/my-tex-life-with-julia:latest
 # $ docker push okatsn/my-tex-life-with-julia:latest
@@ -14,7 +16,6 @@ FROM okatsn/my-tex-life:v2024a1
 # Docker image https://hub.docker.com/repository/docker/okatsn/my-tex-life/general built from https://github.com/okatsn/MyTeXLife
 
 
-# KEYNOTE: Please keep the following codes consistent with https://github.com/okatsn/MyJuliaSpace/tree/master/.devcontainer
 USER root
 
 # # Install Zotero

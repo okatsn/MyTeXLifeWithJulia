@@ -11,10 +11,10 @@ services:
       # context: .
       #     That is /.devcontainer
       dockerfile: .devcontainer/Dockerfile
-    image: latexjuliadev
+    image: texjuliadev # SETME: Better not to have duplicate image name
     init: true
     # See https://docs.docker.com/compose/compose-file/compose-file-v3/#init
-    container_name: tex-with-julia
+    container_name: tex-with-julia # SETME: Better not to have duplicate container name. Error "Conflict will occur if another. The container name "/tex-with-julia" is already in use by container" might occur if there is another container of the same name is currently running.
     volumes:
       # # The home directory is called "workspace"; try `cd ..` and `ls` to figure it out.
       - ../:/workspace

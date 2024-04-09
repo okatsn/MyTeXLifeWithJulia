@@ -2,16 +2,16 @@
 // - For "name", make it unique among existing container
 // - For all others, make it the same/consistent with that in https://github.com/okatsn/MyTeXLife
 {
-    "name": "MyTeXLifeWithJulia",
+    "name": "MyTeXLifeWithJulia", // SETME: Rename all of this name if you are building another container of this kind.
     "dockerComposeFile": [
         "docker-compose.yml"
     ],
-    "service": "devtj", // the service in docker-compose.yml
+    "service": "devtj", // the service in docker-compose.yml // SETME: Rename all of this name if you are building another container of this kind.
     // "runServices": [ // This seems useless
     //     "devtj"
     // ],
     "shutdownAction": "stopCompose",
-    "workspaceFolder": "/workspace", // SETME: make this consistent with that in docker-compose.yml. See okatsn/my-tex-life for where it is defined
+    "workspaceFolder": "/workspace", // KEYNOTE: make this consistent with that in docker-compose.yml. See okatsn/my-tex-life for where it is defined
     "customizations": {
         "vscode": {
             "extensions": [
@@ -47,7 +47,7 @@
                 "gitProjectManager.baseProjectsFolders": [
                     "/workspace/projects", // SUB_PROJECT_DIR defined in this Dockerfile or the previous image (i.e., okatsn/my-tex-life)
                     "~/.julia/dev",
-                    // SETME: it is allows GPM (felipecaputo.git-project-manager) to open repo in the "projects" in a new window
+                    // KEYNOTE: it is allows GPM (felipecaputo.git-project-manager) to open repo in the "projects" in a new window
                     "/workspace"
                 ],
                 // MyTeXLife Exclusive
@@ -76,7 +76,7 @@
                 },
                 // SECTION: JULIA Exclusive
                 // "python.defaultInterpreterPath": "/opt/conda/bin/python", // this is for quarto to correctly work with VSCode.
-                "julia.environmentPath": "/workspace", // SETME: it is expected to be WORKSPACE_DIR  defined in Dockerfile
+                "julia.environmentPath": "/workspace", // KEYNOTE: it is expected to be WORKSPACE_DIR  defined in Dockerfile
                 // General settings
                 "files.eol": "\n",
                 // Latex settings
