@@ -1,7 +1,7 @@
 # # Instruction
 # - assign a new image name
 # - make this file consistent with that in https://github.com/okatsn/MyTeXLife
-version: "3.2"
+version: "3.8"
 
 services:
   devtj:
@@ -11,6 +11,9 @@ services:
       # context: .
       #     That is /.devcontainer
       dockerfile: .devcontainer/Dockerfile
+      args:
+        JULIA_VER: "v1.10" # SETME: Set the julia version. It should be consistent with that of my-julia-build in the Dockerfile.
+
     image: texjuliadev # SETME: Better not to have duplicate image name
     init: true
     # See https://docs.docker.com/compose/compose-file/compose-file-v3/#init
